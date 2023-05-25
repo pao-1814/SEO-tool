@@ -30,7 +30,13 @@ export const config = {
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
+        './test/specs/LinkChecker.js'
     ],
+
+    suites: {
+      linkCheck: ['./test/specs/LinkChecker.js'],
+      unicCheck: ['./test/specs/UnicChecker.js']
+  },
     //
     // ============
     // Capabilities
@@ -74,7 +80,7 @@ export const config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'silent',
+    logLevel: 'info',
     //
     // Set specific log levels per logger
     // loggers:
@@ -101,12 +107,12 @@ export const config = {
     baseUrl: 'http://localhost',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: 20000,
     services: ['chromedriver', 'intercept'],
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
-    connectionRetryTimeout: 20000,
+    connectionRetryTimeout: 30000,
     //
     // Default request retries count
     connectionRetryCount: 0,
