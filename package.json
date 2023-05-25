@@ -13,7 +13,9 @@
     "wdio-intercept-service": "^4.3.1"
   },
   "scripts": {
-    "wdio": "wdio run ./wdio.conf.js"
+    "wdio": "wdio run ./wdio.conf.js",
+    "unic": "wdio run ./wdio.conf.js --suite unicCheck",
+    "link": "wdio run ./wdio.conf.js --suite linkCheck"
   },
   "dependencies": {
     "axios": "^1.4.0",

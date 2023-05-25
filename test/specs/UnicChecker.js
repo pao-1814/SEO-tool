@@ -57,6 +57,12 @@ describe('Checking unicum', function() {
                     return;
                   }
             })
+            fs.mkdir(`UnicHTML`, {recursive: true}, err => {
+                if (err) {
+                    console.error(err);
+                    return;
+                  }
+            })
             fs.mkdir(`./output/${texts[n].name}_${datestamp}/screenshots`, {recursive: true}, err => {
                 if (err) {
                     console.error(err);
@@ -69,21 +75,17 @@ describe('Checking unicum', function() {
                   return;
                 }
             });
-            console.log(texts[n].sentences.length)
             for (let i = 0; i < texts[n].sentences.length; i++) {
                 await browser.url(`https://www.google.com/search?q="${texts[n].sentences[i]}"`);
                 const captcha = await $('#captcha-form');
-                console.log(await captcha.isExisting())
                 resultArray[i] = {};
                 if(await captcha.isExisting()){
                     server = Math.floor(Math.random() * 20);
                     if(!VPNOn) {
-                        console.log(servers[server])
                         shell.exec(`osascript -e "tell application \\"Tunnelblick\\" to connect \\"${servers[server]}\\""`);
                         VPNOn = true;
                     }
                     else{
-                        console.log(servers[server])
                         shell.exec(`osascript -e "tell application \\"Tunnelblick\\" to disconnect all"`);
                         await browser.pause(2000);
                         shell.exec(`osascript -e "tell application \\"Tunnelblick\\" to connect \\"${servers[server]}\\""`);
@@ -93,7 +95,6 @@ describe('Checking unicum', function() {
                     i--;
                     continue;
                 }
-                console.log('foooooo')
                 await $('#search').waitForDisplayed();
                 await browser.saveScreenshot(`./output/${texts[n].name}_${datestamp}/screenshots/${i+1}.png`);
                 const googleBody = await $('#search').getHTML(false);

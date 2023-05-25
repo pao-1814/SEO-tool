@@ -4,12 +4,15 @@ import shell from "shelljs";
 import fs from 'fs/promises';
 
 describe('DataFetching', () => {
+    after(() => {
+        shell.exec('rm HTMLs/*');
+    })
+
     for (const [index, website] of DataFetcher.websiteArr.entries()) {
         it(`Fetching the website ${website}`, async () => {
             try {
                 await DataFetcher.fetchHtml(website, index);
             } catch(err) {
-                console.error('Booooooooooooom', err)
                 await browser.reloadSession();
             }
         });

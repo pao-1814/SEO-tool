@@ -5,7 +5,7 @@ import axios from 'axios';
 
 class DataFetcher {
   constructor() {
-    this.websiteArr = shell.exec('cat data.txt').stdout.split(/\r?\n/);
+    this.websiteArr = shell.exec('cat input/data.txt').stdout.split(/\r?\n/);
     this.sesstionId = new Date().toLocaleTimeString('it-IT');
   }
 
@@ -42,6 +42,12 @@ class DataFetcher {
     
     async fetchHtml(website, index) {
         const domain = this.getDomain(website);
+        fs.mkdir(`HTMLs`, {recursive: true}, err => {
+            if (err) {
+                console.error(err);
+                return;
+              }
+        })
         try {
             const timeout = new Promise((resolve, reject) => {
                 let id = setTimeout(() => {

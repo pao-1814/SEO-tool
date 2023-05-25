@@ -4,7 +4,8 @@ import { JSDOM } from 'jsdom';
 
 class DataProcessor {
     constructor(){
-        this.link = shell.exec('cat link.txt');
+        this.link = shell.exec('cat input/link.txt');
+        this.datestamp = new Date().toLocaleTimeString('uk-UA');
     }
 
 writeObjectsToCSV(object, filename, append = false) {
@@ -30,7 +31,12 @@ writeObjectsToCSV(object, filename, append = false) {
 
     async processData() {
         let files = shell.ls('HTMLs');
-    
+        fs.mkdir(`output/LinkCheck_${this.datestamp}`, {recursive: true}, err => {
+            if (err) {
+                console.error(err);
+                return;
+              }
+        })
         for (let file of files) {
             const resultObj = {};
             const htmlString = fs.readFileSync(`HTMLs/${file}`, 'utf8');
@@ -53,16 +59,9 @@ writeObjectsToCSV(object, filename, append = false) {
                 resultObj.rel = 'none';
                 resultObj.display = 'not mentioned';
                 resultObj.anchor = 'none';
-            }            
-            // fs.unlink(`HTMLs/${file}`, (err) => {
-            //     if (err) {
-            //         console.error('Error while deleting file', err);
-            //     } else {
-            //         console.log('File removed');
-            //     }
-            // });
+            }
             await browser.pause(200);
-            this.writeObjectsToCSV(resultObj, 'output.csv', file !== files[0]);
+            this.writeObjectsToCSV(resultObj, `output/LinkCheck_${this.datestamp}/output.csv`, file !== files[0]);
         }
         shell.exec('killall Google\ Chrome')
     }
