@@ -13,7 +13,7 @@ describe('Checking unicum', function() {
             texts[index] = {
                 text: fs.readFileSync(`input/Unic/${text}`, 'utf8'),
             }
-            texts[index].sentences = texts[index].text.split(/(?<=[.!?])\s*(?=\S|$)/g),
+            texts[index].sentences = texts[index].text.split(/(?<=[.!?;])\s*(?=\S|$)/g),
             texts[index].name = text;
         })
     });
@@ -107,8 +107,20 @@ describe('Checking unicum', function() {
             for (let i = 0; i < files.length; i++){
                 const htmlString = fs.readFileSync(`UnicHTML/${files[i]}`, 'utf8');
                 const dom = new JSDOM(htmlString);
-                const linksArray = dom.window.document.querySelectorAll(`cite`);
+                let foundLinks = dom.window.document.querySelectorAll(`cite`);
+                let linksArray = Array.from(foundLinks);
                 resultArray[i].sentence = JSON.stringify(texts[n].sentences[i]);
+                // Finding similar queries (if exist)
+                const similarResults = dom.window.document.querySelectorAll('span');
+                const similarResultsArr = Array.from(similarResults);
+                const similarResultsSpan = similarResultsArr.find(span => (span.textContent.includes('People also ask') || span.textContent.includes('Похожие запросы') || span.textContent.includes('Схожі запити')));
+                if(similarResultsSpan){
+                    const similarDiv = similarResultsSpan.parentElement.parentElement.parentElement.parentElement;
+                    let similarLinks = Array.from(similarDiv.querySelectorAll(`cite`));
+                    similarLinks = similarLinks.map(link => link.textContent);
+                    linksArray = linksArray.filter(link => !similarLinks.includes(link.textContent));
+                }
+                //
                 if(linksArray.length){
                     resultArray[i].unic = linksArray[0].textContent.includes(link) && linksArray.length === 2 ? true : false;
                     resultArray[i].links = '';
