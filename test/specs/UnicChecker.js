@@ -98,12 +98,20 @@ describe('Checking unicum', function() {
                 await $('#search').waitForDisplayed();
                 await browser.saveScreenshot(`./output/${texts[n].name}_${datestamp}/screenshots/${i+1}.png`);
                 const googleBody = await $('#search').getHTML(false);
-                await fs.promises.writeFile(`UnicHTML/${i + 1}.html`, googleBody);
+                if(i < 9){
+                    await fs.promises.writeFile(`UnicHTML/00${i + 1}.html`, googleBody);
+                }
+                else if(i >= 9 && i < 99){
+                    await fs.promises.writeFile(`UnicHTML/0${i + 1}.html`, googleBody);
+                }
+                else{
+                    await fs.promises.writeFile(`UnicHTML/${i + 1}.html`, googleBody);
+                }
                 resultArray[i].location = VPNOn ? servers[server] : 'Original IP';
                 await browser.pause(Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000);
-                // await browser.reloadSession();
             }
             let files = shell.ls('UnicHTML');
+            console.log(files)
             for (let i = 0; i < files.length; i++){
                 const htmlString = fs.readFileSync(`UnicHTML/${files[i]}`, 'utf8');
                 const dom = new JSDOM(htmlString);
