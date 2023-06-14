@@ -5,7 +5,7 @@ import axios from 'axios';
 
 class DataFetcher {
   constructor() {
-    this.websiteArr = shell.exec('cat input/data.txt').stdout.split(/\r?\n/);
+    this.websiteArr = shell.exec('cat input/linkCheck/links_to_check.txt').stdout.split(/\r?\n/);
     this.sesstionId = new Date().toLocaleTimeString('it-IT');
   }
 
