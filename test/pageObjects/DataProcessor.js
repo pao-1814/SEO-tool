@@ -36,7 +36,13 @@ class DataProcessor {
 
     async processData() {
         let files = shell.ls('HTMLs');
-        fs.mkdir(`output/LinkCheck_${this.datestamp}`, {recursive: true}, err => {
+        fs.mkdir(`output/linkCheck`, {recursive: true}, err => {
+            if (err) {
+                console.error(err);
+                return;
+              }
+        })
+        fs.mkdir(`output/linkCheck/${this.datestamp}`, {recursive: true}, err => {
             if (err) {
                 console.error(err);
                 return;
@@ -67,7 +73,7 @@ class DataProcessor {
             }
             await browser.pause(200);
         }
-        this.writeObjectsToCSV(this.resultArray, `output/LinkCheck_${this.datestamp}/output.csv`, false);
+        this.writeObjectsToCSV(this.resultArray, `output/linkCheck/${this.datestamp}/output.csv`, false);
         shell.exec('killall Google\ Chrome')
     }
     

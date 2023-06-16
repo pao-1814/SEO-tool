@@ -13,7 +13,13 @@ class GoogleUnicChecker {
     }
 
     createOutputFolders(textName){
-        fs.mkdir(`./output/${textName}_${this.datestamp}`, {recursive: true}, err => {
+        fs.mkdir(`./output/unicCheck`, {recursive: true}, err => {
+            if (err) {
+                console.error(err);
+                return;
+              }
+        })
+        fs.mkdir(`./output/unicCheck/${textName}_${this.datestamp}`, {recursive: true}, err => {
             if (err) {
                 console.error(err);
                 return;
@@ -25,13 +31,13 @@ class GoogleUnicChecker {
                 return;
               }
         })
-        fs.mkdir(`./output/${textName}_${this.datestamp}/screenshots`, {recursive: true}, err => {
+        fs.mkdir(`./output/unicCheck/${textName}_${this.datestamp}/screenshots`, {recursive: true}, err => {
             if (err) {
                 console.error(err);
                 return;
               }
         })
-        fs.writeFile(`./output/${textName}_${this.datestamp}/results.csv`, '', err => {
+        fs.writeFile(`./output/unicCheck/${textName}_${this.datestamp}/results.csv`, '', err => {
             if (err) {
               console.error(err);
               return;
@@ -50,7 +56,7 @@ class GoogleUnicChecker {
                 continue;
             }
             await $('#search').waitForDisplayed();
-            await browser.saveScreenshot(`./output/${text.name}_${this.datestamp}/screenshots/${i+1}.png`);
+            await browser.saveScreenshot(`./output/unicCheck/${text.name}_${this.datestamp}/screenshots/${i+1}.png`);
             const googleBody = await $('#search').getHTML(false);
             if(i < 9){
                 await fs.promises.writeFile(`UnicHTML/00${i + 1}.html`, googleBody);
@@ -100,7 +106,7 @@ class GoogleUnicChecker {
                 }
             }
         }
-        DataProcessor.writeObjectsToCSV(this.resultArray, `./output/${text.name}_${this.datestamp}/results.csv`, false);
+        DataProcessor.writeObjectsToCSV(this.resultArray, `./output/unicCheck/${text.name}_${this.datestamp}/results.csv`, false);
     }
 
     

@@ -71,7 +71,7 @@ class IndexChecker {
         }
     }
 
-    async processFiles(text){
+    async processFiles(){
         let files = shell.ls('indexHTML');
         for (let i = 0; i < files.length; i++){
             const htmlString = fs.readFileSync(`indexHTML/${files[i]}`, 'utf8');
