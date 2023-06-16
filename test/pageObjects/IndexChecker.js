@@ -46,28 +46,35 @@ class IndexChecker {
 
     async fetchHTML() {
         for(let i = 0; i < this.websiteArr.length; i++){
-            await browser.url(`https://www.google.com/search?q=site:${this.websiteArr[i]}`);
-            const captcha = await $('#captcha-form');
-            this.resultArray[i] = {};
-            if(await captcha.isExisting()){
-                await VPN.trigerVPN();
+            try{
+                await browser.url(`https://www.google.com/search?q=site:${this.websiteArr[i]}`);
+                const captcha = await $('#captcha-form');
+                this.resultArray[i] = {};
+                if(await captcha.isExisting()){
+                    await VPN.trigerVPN();
+                    i--;
+                    continue;
+                }
+                await $('#search').waitForExist();
+                await browser.saveScreenshot(`./output/indexCheck/${this.datestamp}/screenshots/${i+1}.png`);
+                const googleBody = await $('#search').getHTML(false);
+                this.resultArray[i].link = this.websiteArr[i];
+                if(i < 9){
+                    await fs.promises.writeFile(`indexHTML/00${i + 1}.html`, googleBody);
+                }
+                else if(i >= 9 && i < 99){
+                    await fs.promises.writeFile(`indexHTML/0${i + 1}.html`, googleBody);
+                }
+                else{
+                    await fs.promises.writeFile(`indexHTML/${i + 1}.html`, googleBody);
+                }
+                await browser.pause(Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000);
+            }
+            catch(err){
+                console.log(err);
                 i--;
-                continue;
+                await browser.reloadSession();
             }
-            await $('#search').waitForExist();
-            await browser.saveScreenshot(`./output/indexCheck/${this.datestamp}/screenshots/${i+1}.png`);
-            const googleBody = await $('#search').getHTML(false);
-            this.resultArray[i].link = this.websiteArr[i];
-            if(i < 9){
-                await fs.promises.writeFile(`indexHTML/00${i + 1}.html`, googleBody);
-            }
-            else if(i >= 9 && i < 99){
-                await fs.promises.writeFile(`indexHTML/0${i + 1}.html`, googleBody);
-            }
-            else{
-                await fs.promises.writeFile(`indexHTML/${i + 1}.html`, googleBody);
-            }
-            await browser.pause(Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000);
         }
     }
 

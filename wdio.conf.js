@@ -113,10 +113,10 @@ export const config = {
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
-    connectionRetryTimeout: 30000,
+    connectionRetryTimeout: 10000,
     //
     // Default request retries count
-    connectionRetryCount: 0,
+    connectionRetryCount: 2,
     //
     // Test runner services
     // Services take over a specific job you don't want to take care of. They enhance
