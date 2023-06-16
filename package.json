@@ -15,7 +15,8 @@
   "scripts": {
     "wdio": "wdio run ./wdio.conf.js",
     "unic": "wdio run ./wdio.conf.js --suite unicCheck",
-    "link": "wdio run ./wdio.conf.js --suite linkCheck"
+    "link": "wdio run ./wdio.conf.js --suite linkCheck",
+    "index": "wdio run ./wdio.conf.js --suite indexCheck"
   },
   "dependencies": {
     "axios": "^1.4.0",

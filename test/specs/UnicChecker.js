@@ -1,9 +1,6 @@
 import shell from "shelljs";
 import fs from 'fs';
-import DataProcessor from "../pageObjects/DataProcessor.js";
 import GoogleUnicChecker from "../pageObjects/GoogleUnicChecker.js";
-import VPN from "../pageObjects/Helpers.js";
-import { JSDOM } from 'jsdom';
 
 
 describe('Checking unicum', function() {

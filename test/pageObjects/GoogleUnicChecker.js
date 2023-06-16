@@ -98,9 +98,9 @@ class GoogleUnicChecker {
                     }
                     this.resultArray[i].links += linksArray[k].textContent + '   '
                 }
-                DataProcessor.writeObjectsToCSV(this.resultArray[i], `./output/${text.name}_${this.datestamp}/results.csv`, this.resultArray[i] !== this.resultArray[0]);
             }
         }
+        DataProcessor.writeObjectsToCSV(this.resultArray, `./output/${text.name}_${this.datestamp}/results.csv`, false);
     }
 
     

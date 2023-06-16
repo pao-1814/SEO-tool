@@ -6,26 +6,31 @@ class DataProcessor {
     constructor(){
         this.link = shell.exec('cat input//linkCheck/links_to_check.txt');
         this.datestamp = new Date().toLocaleTimeString('uk-UA');
+        this.resultArray = [];
     }
 
-writeObjectsToCSV(object, filename, append = false) {
-    const writeStream = fs.createWriteStream(filename, { flags: append ? 'a' : 'w' });
-    const columnNames = Object.keys(object);
-    if (!append) { // Write headers only if it's not appending
-        writeStream.write(columnNames.join(',') + '\n');
+    writeObjectsToCSV(objects, filename, append = false) {
+        const writeStream = fs.createWriteStream(filename, { flags: append ? 'a' : 'w' });
+        const columnNames = Object.keys(objects[0]);
+    
+        if (!append) { // Write headers only if it's not appending
+            writeStream.write(columnNames.join(',') + '\n');
+        }
+    
+        objects.forEach(object => {
+            const row = columnNames.map(columnName => object[columnName]);
+            writeStream.write(row.join(',') + '\n');
+        });
+    
+        writeStream.end();
+    
+        writeStream.on('finish', () => {
+            console.log(`Successfully wrote to ${filename}`);
+        }).on('error', (err) => {
+            console.error('Error writing file', err);
+        });
     }
-
-    const row = columnNames.map(columnName => object[columnName]);
-    writeStream.write(row.join(',') + '\n');
-
-    writeStream.end();
-
-    writeStream.on('finish', () => {
-        console.log(`Successfully wrote to ${filename}`);
-    }).on('error', (err) => {
-        console.error('Error writing file', err);
-    });
-}
+    
 
 
 
@@ -37,32 +42,32 @@ writeObjectsToCSV(object, filename, append = false) {
                 return;
               }
         })
-        for (let file of files) {
-            const resultObj = {};
-            const htmlString = fs.readFileSync(`HTMLs/${file}`, 'utf8');
+        for(let i = 0; i < files.length; i++) {
+            this.resultArray[i] = {};
+            const htmlString = fs.readFileSync(`HTMLs/${files[i]}`, 'utf8');
     
             const dom = new JSDOM(htmlString);
             const linkElement = dom.window.document.querySelector(`a[href*="${this.link}"]`);
     
-            resultObj.website = dom.window.document.getElementById('hostname').textContent;
-            resultObj.statuscode = dom.window.document.getElementById('statuscode').textContent;
+            this.resultArray[i].website = dom.window.document.getElementById('hostname').textContent;
+            this.resultArray[i].statuscode = dom.window.document.getElementById('statuscode').textContent;
     
             if (linkElement) {
-                resultObj.link = linkElement.getAttribute('href');
-                resultObj.absolute = linkElement.getAttribute('position') || 'none';
-                resultObj.rel = linkElement.getAttribute('rel') || 'none';
-                resultObj.display = linkElement.getAttribute('display') || 'none';
-                resultObj.anchor = linkElement.textContent.length ? linkElement.textContent : 'none';
+                this.resultArray[i].link = linkElement.getAttribute('href');
+                this.resultArray[i].absolute = linkElement.getAttribute('position') || 'none';
+                this.resultArray[i].rel = linkElement.getAttribute('rel') || 'none';
+                this.resultArray[i].display = linkElement.getAttribute('display') || 'none';
+                this.resultArray[i].anchor = linkElement.textContent.length ? linkElement.textContent : 'none';
             } else {
-                resultObj.link = 'none';
-                resultObj.absolute = 'not mentioned';
-                resultObj.rel = 'none';
-                resultObj.display = 'not mentioned';
-                resultObj.anchor = 'none';
+                this.resultArray[i].link = 'none';
+                this.resultArray[i].absolute = 'not mentioned';
+                this.resultArray[i].rel = 'none';
+                this.resultArray[i].display = 'not mentioned';
+                this.resultArray[i].anchor = 'none';
             }
             await browser.pause(200);
-            this.writeObjectsToCSV(resultObj, `output/LinkCheck_${this.datestamp}/output.csv`, file !== files[0]);
         }
+        this.writeObjectsToCSV(this.resultArray, `output/LinkCheck_${this.datestamp}/output.csv`, false);
         shell.exec('killall Google\ Chrome')
     }
     

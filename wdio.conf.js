@@ -35,7 +35,8 @@ export const config = {
 
     suites: {
       linkCheck: ['./test/specs/LinkChecker.js'],
-      unicCheck: ['./test/specs/UnicChecker.js']
+      unicCheck: ['./test/specs/UnicChecker.js'],
+      indexCheck: ['./test/specs/IndexChecker.js'],
   },
     //
     // ============
