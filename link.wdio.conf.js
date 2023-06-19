@@ -108,12 +108,12 @@ export const config = {
     baseUrl: 'http://localhost',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 20000,
+    waitforTimeout: 7000,
     services: ['chromedriver', 'intercept'],
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
-    connectionRetryTimeout: 20000,
+    connectionRetryTimeout: 7000,
     //
     // Default request retries count
     connectionRetryCount: 2,
@@ -315,4 +315,3 @@ export const config = {
     // onReload: function(oldSessionId, newSessionId) {
     // }
 }
-
