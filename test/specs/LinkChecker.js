@@ -4,7 +4,7 @@ import shell from "shelljs";
 import fs from 'fs/promises';
 
 describe('DataFetching', () => {
-    after(() => {
+    before(() => {
         shell.exec('rm HTMLs/*');
     })
 
@@ -13,7 +13,6 @@ describe('DataFetching', () => {
             try {
                 await DataFetcher.fetchHtml(website, index);
             } catch(err) {
-                await browser.reloadSession();
             }
         });
     }

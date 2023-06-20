@@ -4,7 +4,7 @@ import { JSDOM } from 'jsdom';
 
 class DataProcessor {
     constructor(){
-        this.link = shell.exec('cat input//linkCheck/links_to_check.txt');
+        this.link = shell.exec('cat ./input/linkCheck/link.txt');
         this.datestamp = new Date().toLocaleTimeString('uk-UA');
         this.resultArray = [];
     }

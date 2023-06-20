@@ -59,6 +59,7 @@ class DataFetcher {
             const fetch = new Promise(async (resolve, reject) => {
                 try {
                     await browser.url(website);
+                    await browser.pause(3000);
                     await $('body').waitForDisplayed();
                     const websiteBody = await $('body').getHTML(false);
                     const statusCode = await this.getStatusCode(website);
@@ -71,11 +72,10 @@ class DataFetcher {
                 }
             })
             
-            return await Promise.race([fetch, timeout]);
+            return await Promise.race([fetch, timeout])
             } catch(err){
-                console.warn('===============================================')
-                console.warn('The website has not been loaded')
-                console.warn(err);
+                console.log('===============================================')
+                console.log(`The website ${domain} has not been loaded`)
                 await shell.exec(`osascript -e 'tell application "System Events" to key code 53'`);
                 let websiteBody;
                 try{
@@ -85,19 +85,17 @@ class DataFetcher {
                     websiteBody = '<p>The website has not been loaded</p>'; 
                 }
                 let statusCode = 'none';
-                try{
-                    statusCode = await this.getStatusCode(website);
-                    const resultHTML = `<p id="hostname">${website}</p>` + `<p id="statuscode">${statusCode}</p>` + websiteBody;
-                    // const statusCode = await this.getStatusCode(website);
-                    await fs.writeFile(`HTMLs1/${index + 1}_html_${domain}.html`, resultHTML);
-                    await browser.reloadSession();
-                }
-                catch(err){
-                    const resultHTML = `<p id="hostname">${website}</p>` + websiteBody;
-                    // const statusCode = await this.getStatusCode(website);
-                    await fs.writeFile(`HTMLs1/${index + 1}_html_${domain}.html`, resultHTML);
-                    await browser.reloadSession();
-                }
+                let resultHTML = websiteBody + statusCode;
+                await fs.writeFile(`HTMLs1/${index + 1}_html_${domain}.html`, resultHTML);
+                // try{
+                //     statusCode = await this.getStatusCode(website);
+                //     resultHTML = `<p id="hostname">${website}</p>` + `<p id="statuscode">${statusCode}</p>` + websiteBody;
+                // }
+                // catch(err){
+                //     resultHTML = `<p id="hostname">${website}</p>` + websiteBody;
+                // }
+                await fs.writeFile(`HTMLs1/${index + 1}_html_${domain}.html`, resultHTML);
+                await browser.reloadSession();
             }         
     }
 }

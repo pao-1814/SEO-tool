@@ -108,15 +108,15 @@ export const config = {
     baseUrl: 'http://localhost',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 7000,
+    waitforTimeout: 10000,
     services: ['chromedriver', 'intercept'],
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
-    connectionRetryTimeout: 7000,
+    connectionRetryTimeout: 10000,
     //
     // Default request retries count
-    connectionRetryCount: 2,
+    connectionRetryCount: 0,
     //
     // Test runner services
     // Services take over a specific job you don't want to take care of. They enhance
