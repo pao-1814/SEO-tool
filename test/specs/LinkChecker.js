@@ -13,6 +13,7 @@ describe('DataFetching', () => {
             try {
                 await DataFetcher.fetchHtml(website, index);
             } catch(err) {
+                await browser.reloadSession();
             }
         });
     }

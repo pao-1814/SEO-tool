@@ -116,7 +116,7 @@ export const config = {
     connectionRetryTimeout: 10000,
     //
     // Default request retries count
-    connectionRetryCount: 0,
+    connectionRetryCount: 1,
     //
     // Test runner services
     // Services take over a specific job you don't want to take care of. They enhance
