@@ -3,10 +3,6 @@ import shell from "shelljs";
 class VPN {
     constructor(){
         this.servers = [
-            'Bulgaria1',
-            'Bulgaria2',
-            'Czech',
-            'Finland',
             'Hungary',
             'Ireland',
             'Italy1',
@@ -21,8 +17,8 @@ class VPN {
             'Romania',
             'Spain',
             'Sweden',
-            'Ukraine1',
             'Ukraine2',
+            'Ukraine3',
         ];
         this.currentServer = 0;
         this.VPNOn = false;
