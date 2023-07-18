@@ -1,6 +1,7 @@
 import shell from "shelljs";
 import fs from 'fs/promises';
 import axios from 'axios';
+import { error } from "console";
 
 
 class DataFetcher {
@@ -58,17 +59,22 @@ class DataFetcher {
         
             const fetch = new Promise(async (resolve, reject) => {
                 try {
-                    await browser.url(website);
-                    await browser.pause(5000);
+                    browser.url(website);
+                    await browser.pause(7000);
                     shell.exec(`osascript -e 'tell application "System Events" to key code 53'`);
-                    await $('body').waitForDisplayed();
                     const websiteBody = await $('body').getHTML(false);
-                    const statusCode = await this.getStatusCode(website);
-                    const resultHTML = `<p id="hostname">${website}</p>` + `<p id="statuscode">${statusCode}</p>` + websiteBody
+                    let statusCode = 'xxx';
+                    let resultHTML = `<p id="hostname">${website}</p>` + `<p id="statuscode">${statusCode}</p>` + websiteBody + `<p id="error">No error</p>`
+                    await fs.writeFile(`HTMLs/${index + 1}_html_${domain}.html`, resultHTML);
+                    statusCode = await this.getStatusCode(website);
+                    resultHTML = `<p id="hostname">${website}</p>` + `<p id="statuscode">${statusCode}</p>` + websiteBody + `<p id="error">No error</p>`
                     await fs.writeFile(`HTMLs/${index + 1}_html_${domain}.html`, resultHTML);
                     resolve();
                     } 
                 catch (err) {
+                    const websiteBody = $('body').getHTML(false);
+                    let resultHTML = `<p id="hostname">${website}</p>` + `<p id="statuscode">${statusCode}</p>` + websiteBody + `<p id="error">${err}</p>`
+                    await fs.writeFile(`HTMLs/${index + 1}_html_${domain}.html`, resultHTML);
                     reject(err);
                 }
             })

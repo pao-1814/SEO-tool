@@ -57,6 +57,7 @@ class DataProcessor {
     
             this.resultArray[i].website = dom.window.document.getElementById('hostname').textContent;
             this.resultArray[i].statuscode = dom.window.document.getElementById('statuscode').textContent;
+            this.resultArray[i].error = dom.window.document.getElementById('error').textContent;
     
             if (linkElement) {
                 this.resultArray[i].link = linkElement.getAttribute('href');
