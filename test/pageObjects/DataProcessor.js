@@ -1,6 +1,7 @@
 import shell from "shelljs";
 import fs from 'fs';
 import { JSDOM } from 'jsdom';
+import { hostname } from "os";
 
 class DataProcessor {
     constructor(){
@@ -56,6 +57,7 @@ class DataProcessor {
             const linkElement = dom.window.document.querySelector(`a[href*="${this.link}"]`);
     
             this.resultArray[i].website = dom.window.document.getElementById('hostname').textContent;
+            console.log(this.resultArray[i].website)
             this.resultArray[i].statuscode = dom.window.document.getElementById('statuscode').textContent;
             this.resultArray[i].error = dom.window.document.getElementById('error').textContent;
     

@@ -54,13 +54,13 @@ class DataFetcher {
                 let id = setTimeout(() => {
                 clearTimeout(id);
                 reject(`Timed out while fetching ${website}`);
-                }, 10000) 
+                }, 15000) 
             })
         
             const fetch = new Promise(async (resolve, reject) => {
                 try {
                     browser.url(website);
-                    await browser.pause(7000);
+                    await browser.pause(10000);
                     shell.exec(`osascript -e 'tell application "System Events" to key code 53'`);
                     const websiteBody = await $('body').getHTML(false);
                     let statusCode = 'xxx';
