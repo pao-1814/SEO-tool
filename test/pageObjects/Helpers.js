@@ -7,18 +7,12 @@ class VPN {
             'Ireland',
             'Italy1',
             'Italy2',
-            'Luxemburg',
             'Moldova',
             'Netherlands1',
             'Netherlands2',
             'Poland1',
             'Poland2',
-            'Portugal',
             'Romania',
-            'Spain',
-            'Sweden',
-            'Ukraine2',
-            'Ukraine3',
         ];
         this.currentServer = 0;
         this.VPNOn = false;
@@ -33,7 +27,7 @@ class VPN {
     }
 
     shuffleServer(){
-        this.currentServer = Math.floor(Math.random() * 20);
+        this.currentServer = Math.floor(Math.random() * 10);
     }
 
     async trigerVPN(){
